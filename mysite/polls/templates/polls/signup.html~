@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <title>Python Flask Bucket List App</title>
+ 
+    
+    <link href="http://getbootstrap.com/dist/css/bootstrap.min.css" rel="stylesheet">
+ 
+    <link href="http://getbootstrap.com/examples/jumbotron-narrow/jumbotron-narrow.css" rel="stylesheet">
+    <link href="../static/signup.css" rel="stylesheet">
+    
+  </head>
+ 
+  <body>
+ 
+    <div class="container">
+      <div class="header">
+        <nav>
+          <ul class="nav nav-pills pull-right">
+            <!--<li role="presentation" ><a href="#">Home</a></li>-->                      
+          </ul>
+        </nav>
+        <a class="navbar-brand" href="/polls/login/">Back to login</a>
+        <h3 class="text-muted">Create an account</h3>
+      </div>
+   <!-- {% if documents %}
+        <ul>
+        {% for document in documents %}
+            <li><a href="{{ document.docfile.url }}">{{ document.docfile.name }}</a></li>
+        {% endfor %}
+        </ul>
+    {% else %}
+        <p>No documents.</p>
+    {% endif %}-->
+      <div class="jumbotron">
+          <form method="POST" action="/polls/signupclick/"> 
+         <input type="hidden" name="a" value="1" />
+         <p>Username: <input type="text" name="User name"></p>
+         <p>Password: <input type="text" name="Password"></p>
+         <p><input type="submit" value="SignUp"></p>
+         
+         </form>
+               <form action="/polls/list/" method="post" enctype="multipart/form-data">
+            {% csrf_token %}
+            <p><input type=file name=docfile>
+            <p>{{ form.non_field_errors }}</p>
+            <p>{{ form.docfile.label_tag }} {{ form.docfile.help_text }}</p>
+            <p>
+                {{ form.docfile.errors }}
+                {{ form.docfile }}
+            </p>
+            <p><input type="submit" value="Upload" /></p>
+        </form>
+  
+    </div>
+  </body>
+</html>

@@ -1,0 +1,111 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>Detailed</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link href="http://netdna.bootstrapcdn.com/bootstrap/3.0.0/css/bootstrap.min.css" rel="stylesheet" media="screen">
+    
+    <!-- Latest compiled and minified CSS -->
+<link rel="stylesheet" href="http://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.min.css">
+
+<!-- jQuery library -->
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.0/jquery.min.js"></script>
+
+<!-- Latest compiled JavaScript -->
+<script src="http://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/js/bootstrap.min.js"></script>
+
+
+  </head>
+  <body>
+  {% load set_var %}
+  <nav class="navbar navbar-default">
+  <div class="container-fluid">
+    <div class="navbar-header">
+      <a class="navbar-brand" href="/all">Pollarion</a>
+    </div>
+    <ul class="nav navbar-nav">
+      <!-- <li class="active"><a href="/">Home</a></li> -->
+<!--       <li><a href="#">Page 1</a></li>
+      <li><a href="#">Page 2</a></li> 
+      <li><a href="#">Page 3</a></li>  -->
+    </ul>
+    <ul class="nav navbar-nav navbar-right">
+      <!-- <li><a href="#"><span class="glyphicon glyphicon-user"></span> Sign Up</a></li> -->
+      <li><a href="/polls/logout/"><span class="glyphicon glyphicon-log-out"></span> Logout</a></li>
+      <li>Hi Dhruv !</li>
+    </ul>
+  </div>
+  </nav>
+
+
+
+<!--   <div class="container"> -->
+  <div class="jumbotron">
+    {% for key,value in question.iteritems %}
+      {% if 'text' in key%}
+        <h1>{{value}}</h1>
+      {% endif %}
+    {% endfor %}
+    {% if userExcited %}
+    <a href="/polls/UnlikePost/{% for key,value in question.iteritems %}{% ifequal 'id' key %}{{value}}{% endifequal %}{% endfor %}"><button type="button" class="btn btn-default"><span class="glyphicon glyphicon-heart"></button></a>
+    {% else %}
+    <a href="/polls/likePost/{% for key,value in question.iteritems %}{% ifequal 'id' key %}{{value}}{% endifequal %}{% endfor %}"><button type="button" class="btn btn-default"><span class="glyphicon glyphicon-heart-empty"></button></a>
+    {% endif %}
+  </div>
+<!-- </div> -->
+
+    <div class="container">
+      <p>Answers and votes:</p>
+      <ul>
+        {% for n in answers %}
+        <li>answer text : {{n.0}} ; answer author : {{n.5}} ; answer date : {{n.3}} ; raw : {{n}}</li>
+
+        {% if vote.0 %}
+        {% ifequal vote.1.0 n.2 %}
+    <a href="/polls/unvotePost/{% for key,value in question.iteritems %}{% ifequal 'id' key %}{{value}}{% endifequal %}{% endfor %}/{{n.2}}"><button type="button" class="btn btn-default"><span class="glyphicon glyphicon-thumbs-down"></button></a>{{vote.1.1}}{% endifequal %}
+    {% else %}
+    <a href="/polls/votePost/{% for key,value in question.iteritems %}{% ifequal 'id' key %}{{value}}{% endifequal %}{% endfor %}/{{n.2}}"><button type="button" class="btn btn-default"><span class="glyphicon glyphicon-thumbs-up"></button></a>
+    {% endif %}
+
+        {% ifequal total 0 %}
+        <div class="progress">
+  <div class="progress-bar progress-bar-success" role="progressbar" aria-valuenow="40"
+  aria-valuemin="0" aria-valuemax="100" >
+    {{n.1}}
+  </div>
+</div>
+{% endifequal %}
+        {% endfor %}
+      </ul>
+
+  <form action="/polls/addAnswer/{% for key,value in question.iteritems %}{% ifequal 'id' key %}{{value}}{% endifequal %}{% endfor %}/" method="POST">
+      <textarea class="form-control" rows="5" id="comment" name="text"></textarea>
+      <input type="submit" name="basic" value="Submit">
+</form>
+
+
+      <p>My comments: </p>
+      <form action="/polls/addCommentRoot/{% for key,value in question.iteritems %}{% ifequal 'id' key %}{{value}}{% endifequal %}{% endfor %}/" method="POST">
+      <textarea class="form-control" rows="5" id="comment" name="text"></textarea>
+      <input type="submit" name="basic" value="Submit">
+</form>
+      <ul>
+        {% for n in comments %}
+        comment text : {{n.0.3}} ; comment author : {{n.0.5}} ; comment date : {{n.0.4}} comment number of likes : {{n.0.7}}; raw {{n}}</li>
+        <a href="/addCommentForm?cid={{n.0.0}}&pid={{question.3}}">reply</a>
+        {% ifequal n.0.6 1 %}
+    <a href="/polls/UnlikeComment/{% for key,value in question.iteritems %}{% ifequal 'id' key %}{{value}}{% endifequal %}{% endfor %}/{{n.0.0}}"><button type="button" class="btn btn-default"><span class="glyphicon glyphicon-heart"></button></a>
+    {% else %}
+    <a href="/polls/likeComment/{% for key,value in question.iteritems %}{% ifequal 'id' key %}{{value}}{% endifequal %}{% endfor %}/{{n.0.0}}"><button type="button" class="btn btn-default"><span class="glyphicon glyphicon-heart-empty"></button></a>
+    {% endifequal %}
+    {% endfor %}
+      </ul>
+    </div>
+
+
+   
+
+    <script src="http://code.jquery.com/jquery-1.10.2.min.js"></script>
+    <script src="http://netdna.bootstrapcdn.com/bootstrap/3.0.0/js/bootstrap.min.js"></script>
+  </body>
+</html>
